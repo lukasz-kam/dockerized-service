@@ -1,0 +1,8 @@
+node-app/node_modules
+node-app/*.log
+node-app/.env
+Dockerfile
+.dockerignore
+.git
+.gitignore
+*.md
