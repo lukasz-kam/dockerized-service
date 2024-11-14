@@ -67,5 +67,12 @@ jobs:
             docker stop node-example-app || true
             docker rm node-example-app || true
 
-            docker run -d --name node-example-app -p 80:8080 ${{ secrets.DOCKERHUB_IMAGE }}
+            docker run -d \
+              --name node-example-app \
+              -p 80:8080 \
+              -e SESSION_SECRET="${{ secrets.SESSION_SECRET }}" \
+              -e SECRET_MESSAGE="${{ secrets.SECRET_MESSAGE }}" \
+              -e AUTH_USERNAME="${{ secrets.AUTH_USERNAME }}" \
+              -e AUTH_PASSWORD="${{ secrets.AUTH_PASSWORD }}" \
+              ${{ secrets.DOCKERHUB_IMAGE }}
           EOF
