@@ -12,12 +12,6 @@ jobs:
       - name: Check out code from repository
         uses: actions/checkout@v3
 
-      - name: Get Server IP from file
-        id: get_server_ip
-        run: |
-          SERVER_IP=$(awk '{print $1}' < public_ip)
-          echo "::set-output name=server_ip::${SERVER_IP}"
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -48,7 +42,7 @@ jobs:
 
       - name: SSH into server and run Docker commands
         run: |
-          SERVER_IP="${{ needs.build.outputs.server_ip }}"
+          SERVER_IP="${{ secrets.SERVER_IP }}"
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$SERVER_IP << 'EOF'
             docker pull ${{ secrets.DOCKERHUB_IMAGE }}
 

@@ -50,10 +50,4 @@ resource "aws_instance" "nodejs_instance" {
   tags = {
     Name = "MyNodejsInstance"
   }
-
-  provisioner "local-exec" {
-    command = <<EOT
-      echo "${self.public_ip}" > public_ip
-    EOT
-  }
 }
