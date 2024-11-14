@@ -40,6 +40,24 @@ jobs:
           echo "${{ secrets.SSH_EC2_KEY }}" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
 
+      - name: Install docker if not installed on EC2
+        run: |
+          SERVER_IP="${{ secrets.SERVER_IP }}"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$SERVER_IP << 'EOF'
+            if ! command -v docker &> /dev/null
+            then
+              echo "Docker not found, installing..."
+              sudo yum update -y
+              sudo yum install -y docker
+              sudo usermod -aG docker ${{ secrets.EC2_USER }}
+              newgrp docker
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            else
+              echo "Docker is already installed."
+            fi
+          EOF
+
       - name: SSH into server and run Docker commands
         run: |
           SERVER_IP="${{ secrets.SERVER_IP }}"
