@@ -40,7 +40,7 @@ resource "local_file" "TF-key" {
 
 resource "aws_instance" "nodejs_instance" {
   ami           = "ami-04b54ebf295fe01d7"
-  instance_type = "t3.nano"
+  instance_type = "t3.micro"
   security_groups = [aws_security_group.web_sg.name]
 
   associate_public_ip_address = true
